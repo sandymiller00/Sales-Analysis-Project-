@@ -24,13 +24,27 @@ The dataset contains:
 ### Database Setup
 1. Create the database:
 ```sql
-CREATE DATABASE SalesAnalysis;
+CREATE DATABASE Sales Analysis;
+USE [Sales Analysis]
 GO
 ```
 
 2. Run the table creation script:
 ```sql
--- scripts/database_setup.sql
+CREATE TABLE [dbo].[Sales Data](
+	[column1] [smallint] NOT NULL,
+	[Order_ID] [int] NOT NULL,
+	[Product] [nvarchar](50) NOT NULL,
+	[Quantity_Ordered] [tinyint] NOT NULL,
+	[Price_Each] [float] NOT NULL,
+	[Order_Date] [datetime2](7) NOT NULL,
+	[Purchase_Address] [nvarchar](50) NOT NULL,
+	[Month] [tinyint] NOT NULL,
+	[Sales] [float] NOT NULL,
+	[City] [nvarchar](50) NOT NULL,
+	[Hour] [tinyint] NOT NULL
+) ON [PRIMARY]
+GO
 ```
 
 ### Data Import
