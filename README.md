@@ -51,12 +51,14 @@ SELECT TOP 10 * FROM [dbo].[Sales Data];
 GO
 
 -- Check for missing values
-` SELECT 
+```sql
+SELECT 
     COUNT(*) - COUNT(order_id) AS missing_order_ids,
     COUNT(*) - COUNT(product) AS missing_products,
     COUNT(*) - COUNT(sales) AS missing_sales
-FROM [dbo].[Sales Data]; `
+FROM [dbo].[Sales Data]; 
 GO
+```
 
 -- Check for duplicates
 `SELECT order_id, COUNT(*) as count
