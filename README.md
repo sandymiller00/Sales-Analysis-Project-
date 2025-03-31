@@ -183,7 +183,7 @@ GO
 
 4. Sales by Day of Week
 ```sql
-`SELECT 
+SELECT 
     DATENAME(WEEKDAY, order_date) AS day_of_week,
     SUM(sales) AS total_sales,
     FORMAT(SUM(sales), 'C') AS formatted_sales
@@ -218,7 +218,7 @@ GO
  
  2. Monthly Sales Growth (though all data is December)
 ```sql
-`SELECT 
+SELECT 
     month,
     SUM(sales) AS monthly_sales,
     FORMAT(SUM(sales), 'C') AS formatted_sales
