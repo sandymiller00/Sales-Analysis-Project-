@@ -290,7 +290,7 @@ GO
 
 Daily sales view
 ```sql
-`CREATE VIEW vw_daily_sales AS
+CREATE VIEW vw_daily_sales AS
 SELECT 
     CAST(order_date AS DATE) AS sales_date,
     SUM(sales) AS daily_sales,
@@ -302,7 +302,7 @@ GO
 
 City performance view
 ```sql
-`CREATE VIEW vw_city_performance AS
+CREATE VIEW vw_city_performance AS
 SELECT 
     city,
     COUNT(DISTINCT order_id) AS order_count,
@@ -317,7 +317,7 @@ GO
 ### Export query results to CSV using SQL Server Import/Export Wizard
 ### Or use this command (requires appropriate permissions):
 ```sql
-`EXEC xp_cmdshell 'bcp "SELECT * FROM Sales Analysis" queryout "C:\temp\sales_export.csv" DESKTOP-RB7SA33\SQLEXPRESS';
+EXEC xp_cmdshell 'bcp "SELECT * FROM Sales Analysis" queryout "C:\temp\sales_export.csv" DESKTOP-RB7SA33\SQLEXPRESS';
 GO
 ```
 
@@ -375,7 +375,7 @@ GO
 ```
 
 ```sql
-`PRINT 'Procedure created successfully';
+PRINT 'Procedure created successfully';
 GO
 ```
 
