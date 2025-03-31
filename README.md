@@ -61,21 +61,26 @@ GO
 ```
 
 -- Check for duplicates
-`SELECT order_id, COUNT(*) as count
+```sql
+SELECT order_id, COUNT(*) as count
 FROM [dbo].[Sales Data]
 GROUP BY order_id
 HAVING COUNT(*) > 1;
-GO`
+GO
+```
 
 ### Basic Analysis Queries
 
 1.Total Sales Revenue
-`SELECT SUM(sales) AS total_revenue, FORMAT(SUM(sales), 'C') AS formatted_revenue
+```sql
+SELECT SUM(sales) AS total_revenue, FORMAT(SUM(sales), 'C') AS formatted_revenue
 FROM [dbo].[Sales Data];
-GO`
+GO
+```
 
 2. Sales by Product (top 10)
- `SELECT TOP 10
+ ```sql
+ SELECT TOP 10
     product,
     SUM(quantity_ordered) AS total_quantity,
     SUM(sales) AS total_sales,
@@ -83,11 +88,13 @@ GO`
 FROM [dbo].[Sales Data]
 GROUP BY product
 ORDER BY total_sales DESC;
-GO`
+GO
+```
 
 
 3. Sales by City
-`SELECT 
+```sql
+SELECT 
     city,
     SUM(sales) AS total_sales,
     FORMAT(SUM(sales), 'C') AS formatted_sales,
@@ -95,22 +102,27 @@ GO`
 FROM [dbo].[Sales Data]
 GROUP BY city
 ORDER BY total_sales DESC;`
+GO
+```
    
 
  4. Hourly Sales Trends
-`SELECT 
+```sql
+SELECT 
     hour,
     SUM(sales) AS hourly_sales,
     FORMAT(SUM(sales), 'C') AS formatted_sales
 FROM [dbo].[Sales Data]
 GROUP BY hour
 ORDER BY hour;
-GO`
+GO
+```
 
 ### Advanced Analysis
 
  1. Products Frequently Sold Together
-`WITH product_pairs AS (
+```sql
+WITH product_pairs AS (
     SELECT 
         a.order_id,
         a.product AS product1,
@@ -125,20 +137,24 @@ SELECT TOP 10
 FROM product_pairs
 GROUP BY product1, product2
 ORDER BY times_purchased_together DESC;
-GO`
+GO
+```
 
 2. Monthly Sales Growth (though all data is December)
-`SELECT 
+```sql
+SELECT 
     month,
     SUM(sales) AS monthly_sales,
     FORMAT(SUM(sales), 'C') AS formatted_sales
 FROM sales
 GROUP BY month
 ORDER BY month;
-GO`
+GO
+```
 
  3. Average Order Value
-`SELECT 
+```sql
+SELECT 
     AVG(order_total) AS avg_order_value,
     FORMAT(AVG(order_total), 'C') AS formatted_avg
 FROM (
@@ -148,9 +164,11 @@ FROM (
     FROM sales
     GROUP BY order_id
 ) AS order_totals;
-GO`
+GO
+```
 
 4. Sales by Day of Week
+```sql
 `SELECT 
     DATENAME(WEEKDAY, order_date) AS day_of_week,
     SUM(sales) AS total_sales,
@@ -158,13 +176,14 @@ GO`
 FROM [dbo].[Sales Data]
 GROUP BY DATENAME(WEEKDAY, order_date)
 ORDER BY total_sales DESC;
-GO`
+GO
+```
 
 ### Advanced Analysis
 
  1. Products Frequently Sold Together
-
-`WITH product_pairs AS (
+```sql
+WITH product_pairs AS (
     SELECT 
         a.order_id,
         a.product AS product1,
@@ -179,10 +198,12 @@ SELECT TOP 10
 FROM product_pairs
 GROUP BY product1, product2
 ORDER BY times_purchased_together DESC;
-GO`
+GO
+```sql
 
  
  2. Monthly Sales Growth (though all data is December)
+```sql
 `SELECT 
     month,
     SUM(sales) AS monthly_sales,
@@ -190,10 +211,12 @@ GO`
 FROM [dbo].[Sales Data]
 GROUP BY month
 ORDER BY month;
-GO`
+GO
+```
 
 3. Average Order Value
-`SELECT 
+```sql
+SELECT 
     AVG(order_total) AS avg_order_value,
     FORMAT(AVG(order_total), 'C') AS formatted_avg
 FROM (
@@ -203,35 +226,38 @@ FROM (
     FROM [dbo].[Sales Data]
     GROUP BY order_id
 ) AS order_totals;
-GO`
+GO
+```
 
 4. Sales by Day of Week
-
-`SELECT 
+```sql
+SELECT 
     DATENAME(WEEKDAY, order_date) AS day_of_week,
     SUM(sales) AS total_sales,
     FORMAT(SUM(sales), 'C') AS formatted_sales
 FROM [dbo].[Sales Data]
 GROUP BY DATENAME(WEEKDAY, order_date)
 ORDER BY total_sales DESC;
-GO`
+GO
+```
 
  ### Time Series Analysis
 
 1. Daily Sales Trend
-
-`SELECT 
+```sql
+SELECT 
     CAST(order_date AS DATE) AS sales_date,
     SUM(sales) AS daily_sales,
     FORMAT(SUM(sales), 'C') AS formatted_sales
 FROM [dbo].[Sales Data]
 GROUP BY CAST(order_date AS DATE)
 ORDER BY sales_date;
-GO`
+GO
+```
 
 2. Rolling 7-Day Average
-
-`WITH daily_sales AS (
+```sql
+WITH daily_sales AS (
     SELECT 
         CAST(order_date AS DATE) AS sales_date,
         SUM(sales) AS daily_sales
@@ -244,13 +270,14 @@ SELECT
     AVG(daily_sales) OVER (ORDER BY sales_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS rolling_7day_avg
 FROM daily_sales
 ORDER BY sales_date;
-GO`
+GO
+```
 
  ### Create Views for Reporting
 
  Sales by product view
-
-`CREATE VIEW vw_sales_by_product AS
+```sql
+CREATE VIEW vw_sales_by_product AS
 SELECT 
     product,
     SUM(quantity_ordered) AS total_quantity,
@@ -258,10 +285,11 @@ SELECT
     FORMAT(SUM(sales), 'C') AS formatted_sales
 FROM [dbo].[Sales Data]
 GROUP BY product;
-GO`
+GO
+```
 
 Daily sales view
-
+```sql
 `CREATE VIEW vw_daily_sales AS
 SELECT 
     CAST(order_date AS DATE) AS sales_date,
@@ -269,10 +297,11 @@ SELECT
     FORMAT(SUM(sales), 'C') AS formatted_sales
 FROM [dbo].[Sales Data]
 GROUP BY CAST(order_date AS DATE);
-GO`
+GO
+```
 
 City performance view
-
+```sql
 `CREATE VIEW vw_city_performance AS
 SELECT 
     city,
@@ -282,48 +311,54 @@ SELECT
     ROUND(SUM(sales) * 100.0 / (SELECT SUM(sales) FROM [dbo].[Sales Data]), 2) AS percentage
 FROM [dbo].[Sales Data]
 GROUP BY city;
-GO`
+GO
+```
 
 ### Export query results to CSV using SQL Server Import/Export Wizard
 ### Or use this command (requires appropriate permissions):
-
+```sql
 `EXEC xp_cmdshell 'bcp "SELECT * FROM Sales Analysis" queryout "C:\temp\sales_export.csv" DESKTOP-RB7SA33\SQLEXPRESS';
-GO`
+GO
+```
 
 ### For specific queries:
-
-`EXEC xp_cmdshell 'bcp "SELECT product, SUM(sales) AS total_sales FROM Sales Analysis GROUP BY product" queryout "C:\temp\product_sales.csv"  ';
-GO`
+```sql
+EXEC xp_cmdshell 'bcp "SELECT product, SUM(sales) AS total_sales FROM Sales Analysis GROUP BY product" queryout "C:\temp\product_sales.csv"  ';
+GO
+```
 
 
 
  ### Create a stored procedure for monthly report
 
 Add an index for better performance on large datasets
-
-`CREATE INDEX idx_sales_order_date ON sales(order_date);
+```sql
+CREATE INDEX idx_sales_order_date ON sales(order_date);
 CREATE INDEX idx_sales_product ON sales(product);
 CREATE INDEX idx_sales_city ON sales(city);
-GO`
+GO
+```
 
  
 Get table size information
-
-`EXEC sp_spaceused '[dbo].[Sales Data]';
-GO`
+```sql
+EXEC sp_spaceused '[dbo].[Sales Data]';
+GO
+```
 
 ### First check if the procedure exists and drop it if it does
-
-`IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'sp_monthly_sales_report')
+```sql
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'sp_monthly_sales_report')
 BEGIN
     DROP PROCEDURE sp_monthly_sales_report;
     PRINT 'Existing procedure drop';
 END
-GO`
+GO
+```
 
 ### Then create the new version
-
-`CREATE PROCEDURE sp_monthly_sales_report
+```sql
+CREATE PROCEDURE sp_monthly_sales_report
 AS
 BEGIN
     SELECT 
@@ -336,10 +371,13 @@ BEGIN
     GROUP BY DATENAME(MONTH, order_date), YEAR(order_date), MONTH(order_date)
     ORDER BY YEAR(order_date), MONTH(order_date);
 END;
-GO`
+GO
+```
 
+```sql
 `PRINT 'Procedure created successfully';
-GO`
+GO
+```
 
 ## License
 This project is licensed under the MIT License.
