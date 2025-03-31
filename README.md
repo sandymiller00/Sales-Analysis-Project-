@@ -49,7 +49,7 @@ GO
 
 ### Data Import
 ```sql
--- scripts/data_import.sql
+-- E:\Sales Data.csv
 ```
 
 ## How to Run the Analysis
